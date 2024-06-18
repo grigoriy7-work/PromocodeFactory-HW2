@@ -11,18 +11,16 @@ namespace PromoCodeFactory.DataAccess
 {
     public class DataBaseContext : DbContext
     {
-        private readonly IOptions<Options> _options;
-        public DataBaseContext(IOptions<Options> options)
+        public DataBaseContext(DbContextOptions<DataBaseContext> options): base(options)
         {
-            _options = options;
+            Database.EnsureCreated();
         }
 
         public DbSet<Employee> Employees { get; set; }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+       
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnConfiguring(optionsBuilder);
-            base.Database.EnsureCreated();
+            base.OnModelCreating(modelBuilder);
             //optionsBuilder.UseSqlite(_options.Value.SqliteConnectionString);
         }
     }
