@@ -55,11 +55,13 @@ namespace PromoCodeFactory.WebHost.Controllers
             if (employee == null)
                 return NotFound();
 
+            var roles = employee.Roles ?? Enumerable.Empty<Role>();
+
             var employeeModel = new EmployeeResponse()
             {
                 Id = employee.Id,
                 Email = employee.Email,
-                Roles = employee.Roles.Select(x => new RoleItemResponse()
+                Roles = roles.Select(x => new RoleItemResponse()
                 {
                     Name = x.Name,
                     Description = x.Description
@@ -70,5 +72,75 @@ namespace PromoCodeFactory.WebHost.Controllers
 
             return employeeModel;
         }
+
+        /// <summary>
+        /// Создать сотрудника
+        /// </summary>
+        /// <param name="dto"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<ActionResult> CreateAsync([FromBody] EmployeeCreateDto dto)
+        {
+            var employee = new Employee()
+            {
+                Id = Guid.NewGuid(),
+                FirstName = dto.FirstName,
+                LastName = dto.LastName,
+                Email = dto.Email,
+                AppliedPromocodesCount = dto.AppliedPromocodesCount,
+            };
+
+            await _employeeRepository.CreateAsync(employee);
+            return Created();
+        }
+
+        [HttpPut("{id:guid}")]
+        public async Task<ActionResult> UpdateAsync(Guid id, [FromBody] EmployeeCreateDto dto)
+        {
+            var employee = new Employee()
+            {
+                Id = id,
+                FirstName = dto.FirstName,
+                LastName = dto.LastName,
+                Email = dto.Email,
+                AppliedPromocodesCount = dto.AppliedPromocodesCount,
+            };
+
+            try
+            {
+                await _employeeRepository.UpdateAsync(id, employee);
+            }
+            catch (ArgumentNullException ex)
+            {
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest();
+            }
+
+            return Ok();
+        }
+
+        [HttpDelete("{id:Guid}")]
+        public async Task<ActionResult> DeleteAsync(Guid id)
+        {
+            try
+            {
+                await _employeeRepository.DeleteAsync(id);
+            }
+            catch (ArgumentNullException ex)
+            {
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest();
+            }
+
+            return Ok();
+        }
+
+
     }
 }
