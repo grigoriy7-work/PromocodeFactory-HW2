@@ -19,10 +19,17 @@ namespace PromoCodeFactory.WebHost
             services.AddDbContext<DataBaseContext>(optionsBulder =>
             {
                 optionsBulder.UseSqlite(options.SqliteConnectionString);
-            });           
+            });
+
+            //services.AddSingleton(typeof(IRepository<Employee>), (x) =>
+            //    new InMemoryRepository<Employee>(FakeDataFactory.Employees));
+
+            var provider = services.BuildServiceProvider();
+            var db = provider.GetRequiredService<DataBaseContext>();
 
             services.AddSingleton(typeof(IRepository<Employee>), (x) =>
-                new InMemoryRepository<Employee>(FakeDataFactory.Employees));
+              new EfRepository<Employee>(db, FakeDataFactory.Employees));
+
             services.AddSingleton(typeof(IRepository<Role>), (x) =>
                 new InMemoryRepository<Role>(FakeDataFactory.Roles));
 
