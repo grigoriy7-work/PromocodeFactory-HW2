@@ -31,6 +31,11 @@ namespace PromoCodeFactory.DataAccess.Repositories
             return Task.CompletedTask;
         }
 
+        public Task UpdateAsync(T entity)
+        {
+            throw new NotImplementedException();
+        }
+
         public Task UpdateAsync(Guid id, T entity)
         {
             var model = GetByIdAsync(id).Result ?? throw new ArgumentNullException();

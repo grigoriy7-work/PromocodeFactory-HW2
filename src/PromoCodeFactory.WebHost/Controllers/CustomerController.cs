@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System;
 using PromoCodeFactory.WebHost.Models;
+using PromoCodeFactory.WebHost.Models.Dto;
 
 namespace PromoCodeFactory.WebHost.Controllers
 {
@@ -25,7 +26,7 @@ namespace PromoCodeFactory.WebHost.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public async Task<IEnumerable<Customer>> GetCustomersAsync()
+        public async Task<IEnumerable<Customer>> GetAllAsync()
         {
             return await _customerRepository.GetAllAsync();
         }
@@ -61,7 +62,8 @@ namespace PromoCodeFactory.WebHost.Controllers
         {
             var customer = new Customer()
             {
-
+                FirstName = dto.FirstName,
+                LastName = dto.LastName,
             };
 
             await _customerRepository.CreateAsync(customer);
@@ -71,21 +73,19 @@ namespace PromoCodeFactory.WebHost.Controllers
         /// <summary>
         /// Обновляет клиента
         /// </summary>
-        /// <param name="id"></param>
         /// <param name="dto"></param>
         /// <returns></returns>
-        [HttpPut("{id:guid}")]
-        public async Task<ActionResult> UpdateAsync(Guid id, [FromBody] CustomerCreateDto dto)
+        [HttpPut]
+        public async Task<ActionResult> UpdateAsync([FromBody] CustomerUpdateDto dto)
         {
-            if (_customerRepository.GetByIdAsync(id) == null)
+            var customer = await _customerRepository.GetByIdAsync(dto.Id);
+            if (customer == null)
                 return NotFound();
+    
+            customer.FirstName = dto.FirstName;
+            customer.LastName = dto.LastName;
 
-            var customer = new Customer()
-            {
-
-            };
-
-            await _customerRepository.UpdateAsync(id, customer);
+            await _customerRepository.UpdateAsync(customer);
             return Ok();
         }
 

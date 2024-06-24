@@ -28,7 +28,7 @@ namespace PromoCodeFactory.WebHost.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public async Task<List<EmployeeShortResponse>> GetEmployeesAsync()
+        public async Task<List<EmployeeShortResponse>> GetAllAsync()
         {
             var employees = await _employeeRepository.GetAllAsync();
 
@@ -108,7 +108,7 @@ namespace PromoCodeFactory.WebHost.Controllers
 
             try
             {
-                await _employeeRepository.UpdateAsync(id, employee);
+                await _employeeRepository.UpdateAsync(employee);
             }
             catch (ArgumentNullException ex)
             {
