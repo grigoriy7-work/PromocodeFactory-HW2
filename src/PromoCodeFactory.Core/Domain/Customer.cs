@@ -20,7 +20,7 @@ namespace PromoCodeFactory.Core.Domain
         [MaxLength(100)]
         public string Email { get; set; }
 
-        public virtual ICollection<Preference> Preferences { get; set; }
+        public virtual ICollection<CustomerPreference> CustomerPreferences { get; set; }
 
         public virtual ICollection<PromoCode> PromoCodes { get; set; }
     }

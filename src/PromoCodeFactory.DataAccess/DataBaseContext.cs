@@ -30,10 +30,15 @@ namespace PromoCodeFactory.DataAccess
             modelBuilder.Entity<CustomerPreference>()
                 .HasKey(cp => new { cp.CustomerId, cp.PreferenceId });
 
-            modelBuilder.Entity<PromoCode>()
+            modelBuilder.Entity<CustomerPreference>()
                 .HasOne<Customer>(p => p.Customer)
-                .WithMany(c => c.PromoCodes)
-                .HasForeignKey(p => p.CustomerId);
+                .WithMany(c => c.CustomerPreferences)
+                .HasForeignKey(pc => pc.CustomerId);
+
+            modelBuilder.Entity<CustomerPreference>()
+                .HasOne<Preference>(p => p.Preference)
+                .WithMany(c => c.CustomerPreferences)
+                .HasForeignKey(pc => pc.PreferenceId);
 
             modelBuilder.Entity<Role>()
                 .HasOne<Employee>(e => e.Employee)
