@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.Collections.Generic;
 
 namespace PromoCodeFactory.Core.Domain.Administration
 {
@@ -13,6 +14,6 @@ namespace PromoCodeFactory.Core.Domain.Administration
 
         public Guid EmployeeId { get; set; }
 
-        public Employee Employee { get; set; }  
+        public ICollection<Employee> Employees { get; set; }  
     }
 }

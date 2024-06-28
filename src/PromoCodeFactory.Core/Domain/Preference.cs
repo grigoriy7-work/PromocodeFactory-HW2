@@ -13,6 +13,8 @@ namespace PromoCodeFactory.Core.Domain
         [MaxLength(100)]
         public string Name { get; set; }
 
+        public virtual PromoCode PromoCode { get; set; }
+
         public virtual ICollection<CustomerPreference> CustomerPreferences { get; set; }
 
         public virtual ICollection<Employee> Employees { get; set; }
