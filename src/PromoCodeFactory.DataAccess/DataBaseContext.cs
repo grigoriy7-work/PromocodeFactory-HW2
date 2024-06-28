@@ -58,7 +58,7 @@ namespace PromoCodeFactory.DataAccess
             modelBuilder.Entity<PromoCode>()
                .HasOne<Preference>(p => p.Preference)
                .WithOne(p => p.PromoCode)
-               .HasForeignKey<Preference>(x => x.PromoCode);
+               .HasForeignKey<Preference>(x => x.PromoCodeId);
         }
     }
 }
