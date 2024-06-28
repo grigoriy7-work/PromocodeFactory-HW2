@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace PromoCodeFactory.WebHost.Models.Dto
@@ -13,5 +14,7 @@ namespace PromoCodeFactory.WebHost.Models.Dto
 
         [MaxLength(100)]
         public string Email { get; set; }
+
+        public ICollection<Guid> PreferenceIdList { get; set; } = new List<Guid>();
     }
 }

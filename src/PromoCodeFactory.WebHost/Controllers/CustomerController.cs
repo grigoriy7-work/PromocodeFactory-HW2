@@ -15,10 +15,12 @@ namespace PromoCodeFactory.WebHost.Controllers
     public class CustomerController : ControllerBase
     {
         private readonly IRepository<Customer> _customerRepository;
+        private readonly IRepository<Preference> _preferenceRepository;
 
-        public CustomerController(IRepository<Customer> customerRepository)
+        public CustomerController(IRepository<Customer> customerRepository, IRepository<Preference> preferenceRepository)
         {
             _customerRepository = customerRepository;
+            _preferenceRepository = preferenceRepository;
         }
 
         /// <summary>
@@ -35,6 +37,10 @@ namespace PromoCodeFactory.WebHost.Controllers
                 FirstName = x.FirstName,
                 LastName = x.LastName,
                 Email = x.Email,
+                Preferences = x.CustomerPreferences.Select(p => new PreferenceResponse
+                {
+                    Name = p.Preference?.Name ?? ""
+                }),
             });
 
             return responces;
@@ -59,6 +65,10 @@ namespace PromoCodeFactory.WebHost.Controllers
                 FirstName = customer.FirstName,
                 LastName = customer.LastName,
                 Email = customer.Email,
+                Preferences = customer.CustomerPreferences.Select(p => new PreferenceResponse
+                {
+                    Name = p.Preference?.Name ?? ""
+                }),
             };
 
             return Ok(customerResponse);
@@ -72,11 +82,15 @@ namespace PromoCodeFactory.WebHost.Controllers
         [HttpPost]
         public async Task<ActionResult> CreateAsync([FromBody] CustomerCreateDto dto)
         {
+            var preferences = await _preferenceRepository.GetAllAsync();
+            var foundPreferences = preferences.Where(x => dto.PreferenceIdList.Contains(x.Id));
+
             var customer = new Customer()
             {
                 FirstName = dto.FirstName,
                 LastName = dto.LastName,
                 Email = dto.Email, 
+                CustomerPreferences = foundPreferences.Select(x => new CustomerPreference { Preference = x }).ToList(),
             };
 
             await _customerRepository.CreateAsync(customer);
@@ -94,10 +108,14 @@ namespace PromoCodeFactory.WebHost.Controllers
             var customer = await _customerRepository.GetByIdAsync(dto.Id);
             if (customer == null)
                 return NotFound();
+
+            var preferences = await _preferenceRepository.GetAllAsync();
+            var foundPreferences = preferences.Where(x => dto.PreferenceIdList.Contains(x.Id));
     
             customer.FirstName = dto.FirstName;
             customer.LastName = dto.LastName;
             customer.Email = dto.Email;
+            customer.CustomerPreferences = foundPreferences.Select(x => new CustomerPreference { Preference = x }).ToList();
 
             await _customerRepository.UpdateAsync(customer);
             return Ok();

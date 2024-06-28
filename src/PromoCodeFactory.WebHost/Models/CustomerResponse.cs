@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace PromoCodeFactory.WebHost.Models
 {
@@ -11,5 +12,7 @@ namespace PromoCodeFactory.WebHost.Models
         public string LastName { get; set; }
 
         public string Email { get; set; }
+
+        public IEnumerable<PreferenceResponse> Preferences { get; set; } = new List<PreferenceResponse>();
     }
 }
