@@ -2,8 +2,10 @@
 using Microsoft.Extensions.Options;
 using PromoCodeFactory.Core.Domain;
 using PromoCodeFactory.Core.Domain.Administration;
+using PromoCodeFactory.DataAccess.Data;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -59,6 +61,9 @@ namespace PromoCodeFactory.DataAccess
                .HasOne<Preference>(p => p.Preference)
                .WithOne(p => p.PromoCode)
                .HasForeignKey<Preference>(x => x.PromoCodeId);
+
+            modelBuilder.Entity<Role>().HasData(FakeDataFactory.Roles);
+            modelBuilder.Entity<Employee>().HasData(FakeDataFactory.Employees);
         }
     }
 }

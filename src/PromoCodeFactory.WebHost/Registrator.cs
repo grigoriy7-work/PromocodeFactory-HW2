@@ -31,13 +31,13 @@ namespace PromoCodeFactory.WebHost
             var db = provider.GetRequiredService<DataBaseContext>();
 
             services.AddSingleton(typeof(IRepository<Employee>), (x) =>
-              new EfRepository<Employee>(db, FakeDataFactory.Employees));
+              new EfRepository<Employee>(db));
 
             services.AddSingleton(typeof(IRepository<Customer>), (x) =>
-              new EfRepository<Customer>(db, new List<Customer>()));
+              new EfRepository<Customer>(db));
 
             services.AddSingleton(typeof(IRepository<Role>), (x) =>
-                new InMemoryRepository<Role>(FakeDataFactory.Roles));
+                new EfRepository<Role>(db));
 
             return services;   
         }

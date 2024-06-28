@@ -12,7 +12,7 @@ namespace PromoCodeFactory.DataAccess.Repositories
     {
         private readonly DataBaseContext _db;
 
-        public EfRepository(DataBaseContext db, IEnumerable<T> data) 
+        public EfRepository(DataBaseContext db) 
         {
             _db = db;
         }
