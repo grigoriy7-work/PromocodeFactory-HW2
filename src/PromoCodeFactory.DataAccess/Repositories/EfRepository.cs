@@ -15,8 +15,6 @@ namespace PromoCodeFactory.DataAccess.Repositories
         public EfRepository(DataBaseContext db, IEnumerable<T> data) 
         {
             _db = db;
-            _db.Set<T>().AddRange(data);
-            _db.SaveChanges();
         }
 
         public async Task<T> GetByIdAsync(Guid id)

@@ -14,7 +14,7 @@ namespace PromoCodeFactory.DataAccess
     {
         public DataBaseContext(DbContextOptions<DataBaseContext> options): base(options)
         {
-            Database.EnsureCreated();
+            //Database.EnsureCreated();
         }
 
         public DbSet<Employee> Employees { get; set; }
