@@ -1,12 +1,12 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using PromoCodeFactory.Core.Abstractions.Repositories;
 using PromoCodeFactory.Core.Domain;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using System;
 using PromoCodeFactory.WebHost.Models;
 using PromoCodeFactory.WebHost.Models.Dto;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace PromoCodeFactory.WebHost.Controllers
 {
@@ -26,9 +26,18 @@ namespace PromoCodeFactory.WebHost.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public async Task<IEnumerable<Customer>> GetAllAsync()
+        public async Task<IEnumerable<CustomerResponse>> GetAllAsync()
         {
-            return await _customerRepository.GetAllAsync();
+            var customers = await _customerRepository.GetAllAsync();
+            var responces = customers.Select(x => new CustomerResponse()
+            {
+                Id = x.Id,
+                FirstName = x.FirstName,
+                LastName = x.LastName,
+                Email = x.Email,
+            });
+
+            return responces;
         }
 
         /// <summary>
@@ -46,7 +55,10 @@ namespace PromoCodeFactory.WebHost.Controllers
 
             var customerResponse = new CustomerResponse()
             {
-
+                Id = customer.Id,
+                FirstName = customer.FirstName,
+                LastName = customer.LastName,
+                Email = customer.Email,
             };
 
             return Ok(customerResponse);
@@ -64,6 +76,7 @@ namespace PromoCodeFactory.WebHost.Controllers
             {
                 FirstName = dto.FirstName,
                 LastName = dto.LastName,
+                Email = dto.Email, 
             };
 
             await _customerRepository.CreateAsync(customer);
@@ -84,6 +97,7 @@ namespace PromoCodeFactory.WebHost.Controllers
     
             customer.FirstName = dto.FirstName;
             customer.LastName = dto.LastName;
+            customer.Email = dto.Email;
 
             await _customerRepository.UpdateAsync(customer);
             return Ok();
