@@ -14,6 +14,6 @@ namespace PromoCodeFactory.Core.Domain.Administration
 
         public Guid EmployeeId { get; set; }
 
-        public ICollection<Employee> Employees { get; set; }  
+        public virtual ICollection<Employee> Employees { get; set; }  
     }
 }

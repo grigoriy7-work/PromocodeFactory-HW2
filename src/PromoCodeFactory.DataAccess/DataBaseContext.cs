@@ -48,12 +48,12 @@ namespace PromoCodeFactory.DataAccess
             modelBuilder.Entity<PromoCode>()
                 .HasOne<Employee>(e => e.PartnerManager)
                 .WithMany(r => r.PromoCodes)
-                .HasForeignKey(e => e.PartnerManager);
+                .HasForeignKey(e => e.PartnerManagerId);
 
             modelBuilder.Entity<PromoCode>()
                 .HasOne<Customer>(c => c.Customer)
                 .WithMany(p => p.PromoCodes)
-                .HasForeignKey(c => c.Customer);
+                .HasForeignKey(c => c.CustomerId);
 
             modelBuilder.Entity<PromoCode>()
                .HasOne<Preference>(p => p.Preference)

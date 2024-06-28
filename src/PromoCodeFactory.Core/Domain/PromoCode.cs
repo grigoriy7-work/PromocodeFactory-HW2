@@ -23,10 +23,14 @@ namespace PromoCodeFactory.Core.Domain
         [MaxLength(100)]
         public string PartnerName { get; set; }
 
-        public Employee PartnerManager { get; set; }
+        public Guid PartnerManagerId { get; set; }
 
-        public Preference Preference { get; set; }
+        public virtual Employee PartnerManager { get; set; }
 
-        public Customer Customer { get; set; }
+        public virtual Preference Preference { get; set; }
+
+        public Guid CustomerId { get; set; }
+
+        public virtual Customer Customer { get; set; }
     }
 }
