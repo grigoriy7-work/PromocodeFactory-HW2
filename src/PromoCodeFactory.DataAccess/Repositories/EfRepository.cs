@@ -1,8 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
-using PromoCodeFactory.Core.Abstractions.Repositories;
+﻿using PromoCodeFactory.Core.Abstractions.Repositories;
 using PromoCodeFactory.Core.Domain;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -22,9 +20,9 @@ namespace PromoCodeFactory.DataAccess.Repositories
             return await _db.Set<T>().FindAsync(id);
         }
 
-        public Task<IEnumerable<T>> GetAllAsync()
+        public Task<IQueryable<T>> GetAllAsync()
         {
-            var models =  _db.Set<T>().AsNoTracking().Where(x => !x.Deleted).AsEnumerable();
+            var models =  _db.Set<T>().Where(x => !x.Deleted);
             return Task.FromResult(models);
         }
 
