@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PromoCodeFactory.Core.Abstractions.Repositories;
 using PromoCodeFactory.Core.Domain;
+using PromoCodeFactory.WebHost.Models;
 using PromoCodeFactory.WebHost.Models.Dto;
 using System.Linq;
 using System.Threading.Tasks;
@@ -34,7 +35,25 @@ namespace PromoCodeFactory.WebHost.Controllers
         [HttpGet]
         public async Task<IActionResult> GetPromoCodesAsync()
         {
-            return Ok();
+            var promoCodes = await _promoCodeRepository.GetAllAsync();
+            var response = promoCodes
+                //.Where(x => x.BeginDate >= dateStart && x.EndDate <= dateEnd)
+                .Where(x => !x.Deleted)
+                .Select(x => new PromoCodeResponse
+                {
+                    Code = x.Code,
+                    ServiceInfo = x.ServiceInfo,
+                    BeginDate = x.BeginDate,
+                    EndDate = x.EndDate,    
+                    PartnerName = x.PartnerName,
+                    Preference = new PreferenceResponse
+                    {
+                        Id = x.Preference.Id,
+                        Name = x.Preference.Name,
+                    }
+                });
+
+            return Ok(response);
         }
 
         /// <summary>
