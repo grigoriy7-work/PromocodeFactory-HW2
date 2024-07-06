@@ -69,8 +69,8 @@ namespace PromoCodeFactory.WebHost.Controllers
                 Customer = customer
             };
 
-            var model =  await _promoCodeRepository.CreateAsync(promoCode);
-            return CreatedAtAction(nameof(GivePromocodesToCustomersWithPreferenceAsync), new { id = model.Id }, promoCode);
+            await _promoCodeRepository.CreateAsync(promoCode);
+            return Created();
         }
     }
 }
