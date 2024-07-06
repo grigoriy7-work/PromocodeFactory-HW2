@@ -120,7 +120,7 @@ namespace PromoCodeFactory.WebHost.Controllers
             customer.Email = dto.Email;
 
             await _customerRepository.UpdateAsync(customer);
-            return Ok();
+            return NoContent();
         }
 
         /// <summary>
@@ -131,11 +131,14 @@ namespace PromoCodeFactory.WebHost.Controllers
         [HttpDelete("{id:guid}")]
         public async Task<ActionResult> DeleteAsync(Guid id)
         {
-            if (_customerRepository.GetByIdAsync(id) == null)
+            var customer = await _customerRepository.GetByIdAsync(id);
+            if (customer == null)
                 return NotFound();
 
+            customer.PromoCodes.Clear();
             await _customerRepository.DeleteAsync(id);
-            return Ok();    
+            
+            return NoContent();    
         }
     }
 }
