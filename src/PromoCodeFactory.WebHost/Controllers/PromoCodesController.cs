@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using PromoCodeFactory.Core.Abstractions.Repositories;
 using PromoCodeFactory.Core.Domain;
-using PromoCodeFactory.Core.Domain.Administration;
 using PromoCodeFactory.WebHost.Models.Dto;
-using System.Collections;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace PromoCodeFactory.WebHost.Controllers
@@ -15,11 +15,16 @@ namespace PromoCodeFactory.WebHost.Controllers
     {
         private readonly IRepository<PromoCode> _promoCodeRepository;
         private readonly IRepository<Preference> _preferenceRepository;
+        private readonly IRepository<Customer> _customerRepository;
 
-        public PromoCodesController(IRepository<PromoCode> promoCodeRepository, IRepository<Preference> preferenceRepository)
+        public PromoCodesController(IRepository<PromoCode> promoCodeRepository,
+            IRepository<Preference> preferenceRepository,
+            IRepository<Customer> customerRepository)
         {
             _promoCodeRepository = promoCodeRepository;
             _preferenceRepository = preferenceRepository;
+            _customerRepository = customerRepository;
+
         }
 
         /// <summary>
@@ -41,8 +46,16 @@ namespace PromoCodeFactory.WebHost.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GivePromocodesToCustomersWithPreferenceAsync(PromoCodeRequest promoCodeRequest)
         {
+            var preference = await _preferenceRepository.GetByIdAsync(promoCodeRequest.PreferenceId);
+            if (preference == null)
+                return NotFound();
 
-            if(await _preferenceRepository.GetByIdAsync(promoCodeRequest.PreferenceId) == null)
+            var customers = await _customerRepository.GetAllAsync();
+            var customer = customers
+                .Include(c => c.CustomerPreferences)
+                .FirstOrDefault(c => c.CustomerPreferences.Any(p => p.PreferenceId == promoCodeRequest.PreferenceId) && !c.Deleted);
+
+            if (customer == null)
                 return NotFound();
 
             var promoCode = new PromoCode()
@@ -52,11 +65,11 @@ namespace PromoCodeFactory.WebHost.Controllers
                 BeginDate = promoCodeRequest.BeginDate,
                 EndDate = promoCodeRequest.EndDate,
                 PartnerName = promoCodeRequest.PartnerName,
-                PreferenceId = promoCodeRequest.PreferenceId,
+                Preference = preference,
+                Customer = customer
             };
 
             var model =  await _promoCodeRepository.CreateAsync(promoCode);
-
             return CreatedAtAction(nameof(GivePromocodesToCustomersWithPreferenceAsync), new { id = model.Id }, promoCode);
         }
     }
