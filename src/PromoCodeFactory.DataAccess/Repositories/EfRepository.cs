@@ -26,10 +26,11 @@ namespace PromoCodeFactory.DataAccess.Repositories
             return Task.FromResult(models);
         }
 
-        public async Task CreateAsync(T entity)
+        public async Task<T> CreateAsync(T entity)
         {
-            await _db.Set<T>().AddAsync(entity);
-            await _db.SaveChangesAsync();   
+            var model = await _db.Set<T>().AddAsync(entity);
+            await _db.SaveChangesAsync();
+            return model.Entity;
         }
 
         public async Task UpdateAsync(T entity)

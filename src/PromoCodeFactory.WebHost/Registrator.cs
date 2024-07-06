@@ -39,9 +39,11 @@ namespace PromoCodeFactory.WebHost
             services.AddSingleton(typeof(IRepository<Role>), (x) =>
                 new EfRepository<Role>(db));
 
-
             services.AddSingleton(typeof(IRepository<Preference>), (x) =>
                 new EfRepository<Preference>(db));
+
+            services.AddSingleton(typeof(IRepository<PromoCode>), (x) =>
+               new EfRepository<PromoCode>(db));
 
             return services;   
         }

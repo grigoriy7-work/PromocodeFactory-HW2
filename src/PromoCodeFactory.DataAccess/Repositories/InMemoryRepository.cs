@@ -25,10 +25,10 @@ namespace PromoCodeFactory.DataAccess.Repositories
             return Task.FromResult(Data.FirstOrDefault(x => x.Id == id));
         }
 
-        public Task CreateAsync(T entity)
+        public Task<T> CreateAsync(T entity)
         {   
             Data = Data.Append(entity);
-            return Task.CompletedTask;
+            return Task.FromResult(entity);
         }
 
         public Task UpdateAsync(T entity)
