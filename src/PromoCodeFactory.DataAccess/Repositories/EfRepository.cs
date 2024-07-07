@@ -22,7 +22,7 @@ namespace PromoCodeFactory.DataAccess.Repositories
 
         public Task<IQueryable<T>> GetAllAsync()
         {
-            var models =  _db.Set<T>().Where(x => !x.Deleted);
+            var models =  _db.Set<T>().Select(x => x);
             return Task.FromResult(models);
         }
 
@@ -42,7 +42,8 @@ namespace PromoCodeFactory.DataAccess.Repositories
         public async Task DeleteAsync(Guid id)
         {
             var model = await GetByIdAsync(id);
-            model.Deleted = true;
+            //model.Deleted = true;
+            _db.Set<T>().Remove(model);
             await _db.SaveChangesAsync();   
         }
     }

@@ -92,6 +92,12 @@ namespace PromoCodeFactory.WebHost.Controllers
             return Created();
         }
 
+        /// <summary>
+        /// Обновляет сотрудника
+        /// </summary>
+        /// <param name="id">id сотрудника</param>
+        /// <param name="dto">данные сотрудника</param>
+        /// <returns></returns>
         [HttpPut("{id:guid}")]
         public async Task<ActionResult> UpdateAsync(Guid id, [FromBody] EmployeeCreateDto dto)
         {
@@ -116,10 +122,14 @@ namespace PromoCodeFactory.WebHost.Controllers
             {
                 return BadRequest();
             }
-
-            return Ok();
+            return NoContent();
         }
 
+        /// <summary>
+        /// Удаление сотрудника
+        /// </summary>
+        /// <param name="id">id сотрудника</param>
+        /// <returns></returns>
         [HttpDelete("{id:Guid}")]
         public async Task<ActionResult> DeleteAsync(Guid id)
         {
@@ -136,9 +146,7 @@ namespace PromoCodeFactory.WebHost.Controllers
                 return BadRequest();
             }
 
-            return Ok();
+            return NoContent();
         }
-
-
     }
 }

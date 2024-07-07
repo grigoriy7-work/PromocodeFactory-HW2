@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using PromoCodeFactory.Core.Domain;
 using PromoCodeFactory.Core.Domain.Administration;
 
 namespace PromoCodeFactory.DataAccess.Data
@@ -43,6 +44,34 @@ namespace PromoCodeFactory.DataAccess.Data
                 Name = "PartnerManager",
                 Description = "Партнерский менеджер"
             }
+        };
+
+        public static IList<Preference> Preferences => new List<Preference>()
+        {
+            new Preference()
+            {
+                Id = Guid.NewGuid(),
+                Name = "Семья",
+            },
+            new Preference()
+            {
+                Id = Guid.NewGuid(),
+                Name = "Дети",
+            },
+            new Preference()
+            {
+                Id = Guid.NewGuid(),
+                Name = "Театр",
+            },
+            new Preference()
+            {
+                Id = Guid.NewGuid(),
+                Name = "Бизнес",
+            },
+        };
+
+        public static IList<Customer> Customers => new List<Customer>()
+        {
         };
     }
 }

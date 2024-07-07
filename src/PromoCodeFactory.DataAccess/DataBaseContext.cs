@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Options;
 using PromoCodeFactory.Core.Domain;
 using PromoCodeFactory.Core.Domain.Administration;
@@ -64,6 +65,7 @@ namespace PromoCodeFactory.DataAccess
 
             modelBuilder.Entity<Role>().HasData(FakeDataFactory.Roles);
             modelBuilder.Entity<Employee>().HasData(FakeDataFactory.Employees);
+            modelBuilder.Entity<Preference>().HasData(FakeDataFactory.Preferences);
         }
     }
 }

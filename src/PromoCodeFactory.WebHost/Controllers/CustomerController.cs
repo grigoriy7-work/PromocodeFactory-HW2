@@ -133,7 +133,10 @@ namespace PromoCodeFactory.WebHost.Controllers
             if (customer == null)
                 return NotFound();
 
-            customer.PromoCodes.Clear();
+            foreach (var promoCode in customer.PromoCodes)
+            {
+                customer.PromoCodes.Remove(promoCode);
+            };
             await _customerRepository.DeleteAsync(id);
             
             return NoContent();    

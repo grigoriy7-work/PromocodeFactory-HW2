@@ -37,8 +37,6 @@ namespace PromoCodeFactory.WebHost.Controllers
         {
             var promoCodes = await _promoCodeRepository.GetAllAsync();
             var response = promoCodes
-                //.Where(x => x.BeginDate >= dateStart && x.EndDate <= dateEnd)
-                .Where(x => !x.Deleted)
                 .Select(x => new PromoCodeResponse
                 {
                     Code = x.Code,
@@ -72,7 +70,7 @@ namespace PromoCodeFactory.WebHost.Controllers
             var customers = await _customerRepository.GetAllAsync();
             var customer = customers
                 .Include(c => c.CustomerPreferences)
-                .FirstOrDefault(c => c.CustomerPreferences.Any(p => p.PreferenceId == promoCodeRequest.PreferenceId) && !c.Deleted);
+                .FirstOrDefault(c => c.CustomerPreferences.Any(p => p.PreferenceId == promoCodeRequest.PreferenceId));
 
             if (customer == null)
                 return NotFound();
