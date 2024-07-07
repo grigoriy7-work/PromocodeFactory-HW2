@@ -52,21 +52,29 @@ namespace PromoCodeFactory.DataAccess.Data
             {
                 Id = Guid.NewGuid(),
                 Name = "Семья",
+                PromoCodeId = null,
+                CustomerPreferences = new List<CustomerPreference>()
             },
             new Preference()
             {
                 Id = Guid.NewGuid(),
                 Name = "Дети",
+                PromoCodeId = null,
+                CustomerPreferences = new List<CustomerPreference>()
             },
             new Preference()
             {
                 Id = Guid.NewGuid(),
                 Name = "Театр",
+                PromoCodeId = null,
+                CustomerPreferences = new List<CustomerPreference>()
             },
             new Preference()
             {
                 Id = Guid.NewGuid(),
                 Name = "Бизнес",
+                PromoCodeId = null,
+                CustomerPreferences = new List<CustomerPreference>()
             },
         };
 
