@@ -67,6 +67,7 @@ namespace PromoCodeFactory.WebHost.Controllers
         {
             var customer = (await _customerRepository.GetAllAsync())
                 .Include(x => x.CustomerPreferences)
+                .Include(x => x.PromoCodes)
                 .ThenInclude(x => x.Preference)
                 .FirstOrDefault(x => x.Id == id);
 
@@ -80,11 +81,21 @@ namespace PromoCodeFactory.WebHost.Controllers
                 LastName = customer.LastName,
                 Email = customer.Email,
                 Preferences = customer.CustomerPreferences
-                .Select(p => new PreferenceResponse
-                {
-                    Id = p.PreferenceId,
-                    Name = p.Preference.Name
-                }),
+                    .Select(p => new PreferenceResponse
+                    {
+                        Id = p.PreferenceId,
+                        Name = p.Preference.Name
+                    }),
+                PromoCodes = customer.PromoCodes
+                    .Select(p => new PromoCodeShortResponse()
+                    {
+                        Id = p.Id,
+                        Code = p.Code,
+                        ServiceInfo = p.ServiceInfo,
+                        BeginDate = p.BeginDate.ToShortDateString(),
+                        EndDate = p.EndDate.ToShortDateString(),
+                        PartnerName = p.PartnerName
+                    })
             };
 
             return Ok(customerResponse);
