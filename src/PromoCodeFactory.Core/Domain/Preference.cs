@@ -2,9 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PromoCodeFactory.Core.Domain
 {
@@ -15,7 +12,7 @@ namespace PromoCodeFactory.Core.Domain
 
         public Guid? PromoCodeId { get; set; }
 
-        public virtual PromoCode PromoCode { get; set; }
+        public ICollection<PromoCode> PromoCodes { get; set; } = new List<PromoCode>();
 
         public virtual ICollection<CustomerPreference> CustomerPreferences { get; set; } = new List<CustomerPreference>();
 

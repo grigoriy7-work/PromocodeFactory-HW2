@@ -42,7 +42,6 @@ namespace PromoCodeFactory.DataAccess.Repositories
         public async Task DeleteAsync(Guid id)
         {
             var model = await GetByIdAsync(id);
-            //model.Deleted = true;
             _db.Set<T>().Remove(model);
             await _db.SaveChangesAsync();   
         }

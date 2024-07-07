@@ -60,8 +60,8 @@ namespace PromoCodeFactory.DataAccess
 
             modelBuilder.Entity<PromoCode>()
                .HasOne<Preference>(p => p.Preference)
-               .WithOne(p => p.PromoCode)
-               .HasForeignKey<Preference>(x => x.PromoCodeId);
+               .WithMany(p => p.PromoCodes)
+               .HasForeignKey(x => x.PreferenceId);
 
             modelBuilder.Entity<Role>().HasData(FakeDataFactory.Roles);
             modelBuilder.Entity<Employee>().HasData(FakeDataFactory.Employees);
