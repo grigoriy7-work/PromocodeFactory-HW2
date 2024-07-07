@@ -10,9 +10,7 @@ namespace PromoCodeFactory.Core.Domain
         [MaxLength(100)]
         public string Name { get; set; }
 
-        public Guid? PromoCodeId { get; set; }
-
-        public ICollection<PromoCode> PromoCodes { get; set; } = new List<PromoCode>();
+        public virtual ICollection<PromoCode> PromoCodes { get; set; } = new List<PromoCode>();
 
         public virtual ICollection<CustomerPreference> CustomerPreferences { get; set; } = new List<CustomerPreference>();
 
