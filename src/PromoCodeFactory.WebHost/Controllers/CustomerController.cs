@@ -43,6 +43,15 @@ namespace PromoCodeFactory.WebHost.Controllers
                     Id = p.PreferenceId,
                     Name = p.Preference.Name
                 }),
+                PromoCodes = x.PromoCodes.Select(p => new PromoCodeShortResponse
+                {
+                    Id = p.Id,
+                    Code = p.Code,
+                    ServiceInfo = p.ServiceInfo,
+                    BeginDate = p.BeginDate.ToShortDateString(),
+                    EndDate = p.EndDate.ToShortDateString(),
+                    PartnerName = p.PartnerName
+                })
             });
 
             return responces;

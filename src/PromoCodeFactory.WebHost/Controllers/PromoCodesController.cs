@@ -41,13 +41,20 @@ namespace PromoCodeFactory.WebHost.Controllers
                 {
                     Code = x.Code,
                     ServiceInfo = x.ServiceInfo,
-                    BeginDate = x.BeginDate,
-                    EndDate = x.EndDate,    
+                    BeginDate = x.BeginDate.ToShortDateString(),
+                    EndDate = x.EndDate.ToShortDateString(),    
                     PartnerName = x.PartnerName,
                     Preference = new PreferenceResponse
                     {
                         Id = x.Preference.Id,
                         Name = x.Preference.Name,
+                    },
+                    Customer = new CustomerShortRespons
+                    {
+                        Id = x.CustomerId,
+                        FirstName = x.Customer.FirstName,
+                        LastName = x.Customer.LastName,
+                        Email = x.Customer.Email,
                     }
                 });
 
