@@ -67,8 +67,8 @@ namespace PromoCodeFactory.WebHost.Controllers
         {
             var customer = (await _customerRepository.GetAllAsync())
                 .Include(x => x.CustomerPreferences)
-                .Include(x => x.PromoCodes)
                 .ThenInclude(x => x.Preference)
+                .Include(x => x.PromoCodes)                
                 .FirstOrDefault(x => x.Id == id);
 
             if (customer == null)
@@ -153,10 +153,7 @@ namespace PromoCodeFactory.WebHost.Controllers
             if (customer == null)
                 return NotFound();
 
-            foreach (var promoCode in customer.PromoCodes)
-            {
-                customer.PromoCodes.Remove(promoCode);
-            };
+            customer.PromoCodes.Clear();
             await _customerRepository.DeleteAsync(id);
             
             return NoContent();    
