@@ -65,7 +65,9 @@ namespace PromoCodeFactory.DataAccess
 
             modelBuilder.Entity<Role>().HasData(FakeDataFactory.Roles);
             modelBuilder.Entity<Employee>().HasData(FakeDataFactory.Employees);
-            //modelBuilder.Entity<Preference>().HasData(FakeDataFactory.Preferences);
+            modelBuilder.Entity<Preference>().HasData(FakeDataFactory.Preferences);
+            modelBuilder.Entity<Customer>().HasData(FakeDataFactory.Customers);
+            modelBuilder.Entity<CustomerPreference>().HasData(FakeDataFactory.CustomerPreferences);
         }
     }
 }

@@ -50,21 +50,21 @@ namespace PromoCodeFactory.DataAccess.Data
         {
             new Preference()
             {
-                Id = Guid.NewGuid(),
+                Id = Guid.Parse("f6b0e44e-7b9e-4c9c-9fb8-0c86880ebed9"),
                 Name = "Семья",
                 CustomerPreferences = new List<CustomerPreference>(),
                 PromoCodes = new List<PromoCode>()
             },
             new Preference()
             {
-                Id = Guid.NewGuid(),
+                Id = Guid.Parse("237e6d2d-519a-42a6-859b-2f70ecacfb71"),
                 Name = "Дети",
                 CustomerPreferences = new List<CustomerPreference>(),
                 PromoCodes = new List<PromoCode>()
             },
             new Preference()
             {
-                Id = Guid.NewGuid(),
+                Id = Guid.Parse("1a40591f-a22c-4300-aefa-29c12a093dd2"),
                 Name = "Театр",
                 CustomerPreferences = new List<CustomerPreference>(),
                 PromoCodes = new List<PromoCode>()
@@ -72,7 +72,7 @@ namespace PromoCodeFactory.DataAccess.Data
             },
             new Preference()
             {
-                Id = Guid.NewGuid(),
+                Id = Guid.Parse("f1346ed6-d126-4cda-be54-8a37b18d87f9"),
                 Name = "Бизнес",
                 CustomerPreferences = new List<CustomerPreference>(),
                 PromoCodes = new List<PromoCode>()
@@ -81,6 +81,61 @@ namespace PromoCodeFactory.DataAccess.Data
 
         public static IList<Customer> Customers => new List<Customer>()
         {
+            new()
+            {
+                Id = Guid.Parse("2d56645d-84bb-40f5-adbc-6850c2d30ef9"),
+                FirstName = "Синдзи",
+                LastName = "Икари",
+                Email = "shinji@mail.com",
+            },
+            new()
+            {
+                Id = Guid.Parse("119a2ebc-85e5-43b9-bd7c-097e52196373"),
+                FirstName = "Мисато",
+                LastName = "Кацураги",
+                Email = "misato@mail.com",
+            },
+            new()
+            {
+                Id = Guid.Parse("794d3f49-6ddf-4a4b-9d6b-5c8e164d87f8"),
+                FirstName = "Рицуко",
+                LastName = "Акаги",
+                Email = "ritsuko@mail.com",
+            }
+        };
+
+        public static IList<CustomerPreference> CustomerPreferences = new List<CustomerPreference>()
+        {
+            new()
+            {
+                CustomerId = Customers.First(c => c.FirstName == "Синдзи").Id,
+                PreferenceId = Preferences.First(p => p.Name == "Бизнес").Id
+            },
+            new()
+            {
+                CustomerId = Customers.First(c => c.FirstName == "Синдзи").Id,
+                PreferenceId = Preferences.First(p => p.Name == "Театр").Id
+            },
+            new()
+            {
+                CustomerId = Customers.First(c => c.FirstName == "Мисато").Id,
+                PreferenceId = Preferences.First(p => p.Name == "Театр").Id
+            },
+            new()
+            {
+                CustomerId = Customers.First(c => c.FirstName == "Мисато").Id,
+                PreferenceId = Preferences.First(p => p.Name == "Дети").Id
+            },
+            new()
+            {
+                CustomerId = Customers.First(c => c.FirstName == "Рицуко").Id,
+                PreferenceId = Preferences.First(p => p.Name == "Дети").Id
+            },
+            new()
+            {
+                CustomerId = Customers.First(c => c.FirstName == "Рицуко").Id,
+                PreferenceId = Preferences.First(p => p.Name == "Семья").Id
+            }
         };
     }
 }
