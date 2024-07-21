@@ -28,7 +28,7 @@ namespace PromoCodeFactory.WebHost.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public async Task<List<EmployeeShortResponse>> GetEmployeesAsync()
+        public async Task<List<EmployeeShortResponse>> GetAllAsync()
         {
             var employees = await _employeeRepository.GetAllAsync();
 
@@ -55,17 +55,15 @@ namespace PromoCodeFactory.WebHost.Controllers
             if (employee == null)
                 return NotFound();
 
-            var roles = employee.Roles ?? Enumerable.Empty<Role>();
-
             var employeeModel = new EmployeeResponse()
             {
                 Id = employee.Id,
                 Email = employee.Email,
-                Roles = roles.Select(x => new RoleItemResponse()
+                Role = new RoleItemResponse()
                 {
-                    Name = x.Name,
-                    Description = x.Description
-                }).ToList(),
+                    Name = employee.Role.Name,
+                    Description = employee.Role.Description,
+                },
                 FullName = employee.FullName,
                 AppliedPromocodesCount = employee.AppliedPromocodesCount
             };
@@ -94,6 +92,12 @@ namespace PromoCodeFactory.WebHost.Controllers
             return Created();
         }
 
+        /// <summary>
+        /// Обновляет сотрудника
+        /// </summary>
+        /// <param name="id">id сотрудника</param>
+        /// <param name="dto">данные сотрудника</param>
+        /// <returns></returns>
         [HttpPut("{id:guid}")]
         public async Task<ActionResult> UpdateAsync(Guid id, [FromBody] EmployeeCreateDto dto)
         {
@@ -108,7 +112,7 @@ namespace PromoCodeFactory.WebHost.Controllers
 
             try
             {
-                await _employeeRepository.UpdateAsync(id, employee);
+                await _employeeRepository.UpdateAsync(employee);
             }
             catch (ArgumentNullException ex)
             {
@@ -118,10 +122,14 @@ namespace PromoCodeFactory.WebHost.Controllers
             {
                 return BadRequest();
             }
-
-            return Ok();
+            return NoContent();
         }
 
+        /// <summary>
+        /// Удаление сотрудника
+        /// </summary>
+        /// <param name="id">id сотрудника</param>
+        /// <returns></returns>
         [HttpDelete("{id:Guid}")]
         public async Task<ActionResult> DeleteAsync(Guid id)
         {
@@ -138,9 +146,7 @@ namespace PromoCodeFactory.WebHost.Controllers
                 return BadRequest();
             }
 
-            return Ok();
+            return NoContent();
         }
-
-
     }
 }

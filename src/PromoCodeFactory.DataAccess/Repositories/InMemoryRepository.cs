@@ -15,9 +15,9 @@ namespace PromoCodeFactory.DataAccess.Repositories
             Data = data;
         }
 
-        public Task<IEnumerable<T>> GetAllAsync()
+        public Task<IQueryable<T>> GetAllAsync()
         {
-            return Task.FromResult(Data);
+            return Task.FromResult(Data.AsQueryable());
         }
 
         public Task<T> GetByIdAsync(Guid id)
@@ -25,10 +25,15 @@ namespace PromoCodeFactory.DataAccess.Repositories
             return Task.FromResult(Data.FirstOrDefault(x => x.Id == id));
         }
 
-        public Task CreateAsync(T entity)
+        public Task<T> CreateAsync(T entity)
         {   
             Data = Data.Append(entity);
-            return Task.CompletedTask;
+            return Task.FromResult(entity);
+        }
+
+        public Task UpdateAsync(T entity)
+        {
+            throw new NotImplementedException();
         }
 
         public Task UpdateAsync(Guid id, T entity)
