@@ -21,7 +21,8 @@ namespace PromoCodeFactory.WebHost
 
             services.AddDbContext<DataBaseContext>(optionsBulder =>
             {
-                optionsBulder.UseSqlite(options.SqliteConnectionString);
+                //optionsBulder.UseSqlite(options.SqliteConnectionString);
+                optionsBulder.UseNpgsql(options.PostgresConnectionString);
             });
 
             //services.AddSingleton(typeof(IRepository<Employee>), (x) =>
