@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using PromoCodeFactory.DataAccess;
 
 #nullable disable
@@ -11,44 +12,45 @@ using PromoCodeFactory.DataAccess;
 namespace PromoCodeFactory.DataAccess.Migrations
 {
     [DbContext(typeof(DataBaseContext))]
-    [Migration("20240628175451_AddSeedData")]
-    partial class AddSeedData
+    [Migration("20240724173211_initDb")]
+    partial class initDb
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "7.0.0");
+            modelBuilder
+                .HasAnnotation("ProductVersion", "7.0.18")
+                .HasAnnotation("Relational:MaxIdentifierLength", 63);
+
+            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("PromoCodeFactory.Core.Domain.Administration.Employee", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("uuid");
 
                     b.Property<int>("AppliedPromocodesCount")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<bool>("Deleted")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("integer");
 
                     b.Property<string>("Email")
                         .HasMaxLength(100)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("character varying(100)");
 
                     b.Property<string>("FirstName")
                         .HasMaxLength(100)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("character varying(100)");
 
                     b.Property<string>("LastName")
                         .HasMaxLength(100)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("character varying(100)");
 
                     b.Property<Guid?>("PreferenceId")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("uuid");
 
                     b.Property<Guid>("RoleId")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
@@ -63,7 +65,6 @@ namespace PromoCodeFactory.DataAccess.Migrations
                         {
                             Id = new Guid("451533d5-d8d5-4a11-9c7b-eb9f14e1a32f"),
                             AppliedPromocodesCount = 5,
-                            Deleted = false,
                             Email = "owner@somemail.ru",
                             FirstName = "Иван",
                             LastName = "Сергеев",
@@ -73,7 +74,6 @@ namespace PromoCodeFactory.DataAccess.Migrations
                         {
                             Id = new Guid("f766e2bf-340a-46ea-bff3-f1700b435895"),
                             AppliedPromocodesCount = 10,
-                            Deleted = false,
                             Email = "andreev@somemail.ru",
                             FirstName = "Петр",
                             LastName = "Андреев",
@@ -85,21 +85,18 @@ namespace PromoCodeFactory.DataAccess.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
-
-                    b.Property<bool>("Deleted")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Description")
                         .HasMaxLength(100)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("character varying(100)");
 
                     b.Property<Guid>("EmployeeId")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Name")
                         .HasMaxLength(100)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("character varying(100)");
 
                     b.HasKey("Id");
 
@@ -109,7 +106,6 @@ namespace PromoCodeFactory.DataAccess.Migrations
                         new
                         {
                             Id = new Guid("53729686-a368-4eeb-8bfa-cc69b6050d02"),
-                            Deleted = false,
                             Description = "Администратор",
                             EmployeeId = new Guid("00000000-0000-0000-0000-000000000000"),
                             Name = "Admin"
@@ -117,7 +113,6 @@ namespace PromoCodeFactory.DataAccess.Migrations
                         new
                         {
                             Id = new Guid("b0ae7aac-5493-45cd-ad16-87426a5e7665"),
-                            Deleted = false,
                             Description = "Партнерский менеджер",
                             EmployeeId = new Guid("00000000-0000-0000-0000-000000000000"),
                             Name = "PartnerManager"
@@ -128,105 +123,172 @@ namespace PromoCodeFactory.DataAccess.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
-
-                    b.Property<bool>("Deleted")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Email")
                         .HasMaxLength(100)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("character varying(100)");
 
                     b.Property<string>("FirstName")
                         .HasMaxLength(100)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("character varying(100)");
 
                     b.Property<string>("LastName")
                         .HasMaxLength(100)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("character varying(100)");
 
                     b.HasKey("Id");
 
                     b.ToTable("Customers");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("2d56645d-84bb-40f5-adbc-6850c2d30ef9"),
+                            Email = "shinji@mail.com",
+                            FirstName = "Синдзи",
+                            LastName = "Икари"
+                        },
+                        new
+                        {
+                            Id = new Guid("119a2ebc-85e5-43b9-bd7c-097e52196373"),
+                            Email = "misato@mail.com",
+                            FirstName = "Мисато",
+                            LastName = "Кацураги"
+                        },
+                        new
+                        {
+                            Id = new Guid("794d3f49-6ddf-4a4b-9d6b-5c8e164d87f8"),
+                            Email = "ritsuko@mail.com",
+                            FirstName = "Рицуко",
+                            LastName = "Акаги"
+                        });
                 });
 
             modelBuilder.Entity("PromoCodeFactory.Core.Domain.CustomerPreference", b =>
                 {
                     b.Property<Guid>("CustomerId")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("uuid");
 
                     b.Property<Guid>("PreferenceId")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("uuid");
 
                     b.HasKey("CustomerId", "PreferenceId");
 
                     b.HasIndex("PreferenceId");
 
                     b.ToTable("CustomerPreferences");
+
+                    b.HasData(
+                        new
+                        {
+                            CustomerId = new Guid("2d56645d-84bb-40f5-adbc-6850c2d30ef9"),
+                            PreferenceId = new Guid("f1346ed6-d126-4cda-be54-8a37b18d87f9")
+                        },
+                        new
+                        {
+                            CustomerId = new Guid("2d56645d-84bb-40f5-adbc-6850c2d30ef9"),
+                            PreferenceId = new Guid("1a40591f-a22c-4300-aefa-29c12a093dd2")
+                        },
+                        new
+                        {
+                            CustomerId = new Guid("119a2ebc-85e5-43b9-bd7c-097e52196373"),
+                            PreferenceId = new Guid("1a40591f-a22c-4300-aefa-29c12a093dd2")
+                        },
+                        new
+                        {
+                            CustomerId = new Guid("119a2ebc-85e5-43b9-bd7c-097e52196373"),
+                            PreferenceId = new Guid("237e6d2d-519a-42a6-859b-2f70ecacfb71")
+                        },
+                        new
+                        {
+                            CustomerId = new Guid("794d3f49-6ddf-4a4b-9d6b-5c8e164d87f8"),
+                            PreferenceId = new Guid("237e6d2d-519a-42a6-859b-2f70ecacfb71")
+                        },
+                        new
+                        {
+                            CustomerId = new Guid("794d3f49-6ddf-4a4b-9d6b-5c8e164d87f8"),
+                            PreferenceId = new Guid("f6b0e44e-7b9e-4c9c-9fb8-0c86880ebed9")
+                        });
                 });
 
             modelBuilder.Entity("PromoCodeFactory.Core.Domain.Preference", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
-
-                    b.Property<bool>("Deleted")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Name")
                         .HasMaxLength(100)
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("PromoCodeId")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("character varying(100)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PromoCodeId")
-                        .IsUnique();
-
                     b.ToTable("Preferences");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("f6b0e44e-7b9e-4c9c-9fb8-0c86880ebed9"),
+                            Name = "Семья"
+                        },
+                        new
+                        {
+                            Id = new Guid("237e6d2d-519a-42a6-859b-2f70ecacfb71"),
+                            Name = "Дети"
+                        },
+                        new
+                        {
+                            Id = new Guid("1a40591f-a22c-4300-aefa-29c12a093dd2"),
+                            Name = "Театр"
+                        },
+                        new
+                        {
+                            Id = new Guid("f1346ed6-d126-4cda-be54-8a37b18d87f9"),
+                            Name = "Бизнес"
+                        });
                 });
 
             modelBuilder.Entity("PromoCodeFactory.Core.Domain.PromoCode", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime>("BeginDate")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Code")
                         .HasMaxLength(100)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("character varying(100)");
 
                     b.Property<Guid>("CustomerId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<bool>("Deleted")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime>("EndDate")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid>("PartnerManagerId")
-                        .HasColumnType("TEXT");
+                    b.Property<Guid?>("PartnerManagerId")
+                        .HasColumnType("uuid");
 
                     b.Property<string>("PartnerName")
                         .HasMaxLength(100)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<Guid>("PreferenceId")
+                        .HasColumnType("uuid");
 
                     b.Property<string>("ServiceInfo")
                         .HasMaxLength(100)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("character varying(100)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CustomerId");
 
                     b.HasIndex("PartnerManagerId");
+
+                    b.HasIndex("PreferenceId");
 
                     b.ToTable("PromoCodes");
                 });
@@ -265,17 +327,6 @@ namespace PromoCodeFactory.DataAccess.Migrations
                     b.Navigation("Preference");
                 });
 
-            modelBuilder.Entity("PromoCodeFactory.Core.Domain.Preference", b =>
-                {
-                    b.HasOne("PromoCodeFactory.Core.Domain.PromoCode", "PromoCode")
-                        .WithOne("Preference")
-                        .HasForeignKey("PromoCodeFactory.Core.Domain.Preference", "PromoCodeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("PromoCode");
-                });
-
             modelBuilder.Entity("PromoCodeFactory.Core.Domain.PromoCode", b =>
                 {
                     b.HasOne("PromoCodeFactory.Core.Domain.Customer", "Customer")
@@ -286,13 +337,19 @@ namespace PromoCodeFactory.DataAccess.Migrations
 
                     b.HasOne("PromoCodeFactory.Core.Domain.Administration.Employee", "PartnerManager")
                         .WithMany("PromoCodes")
-                        .HasForeignKey("PartnerManagerId")
+                        .HasForeignKey("PartnerManagerId");
+
+                    b.HasOne("PromoCodeFactory.Core.Domain.Preference", "Preference")
+                        .WithMany("PromoCodes")
+                        .HasForeignKey("PreferenceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Customer");
 
                     b.Navigation("PartnerManager");
+
+                    b.Navigation("Preference");
                 });
 
             modelBuilder.Entity("PromoCodeFactory.Core.Domain.Administration.Employee", b =>
@@ -317,11 +374,8 @@ namespace PromoCodeFactory.DataAccess.Migrations
                     b.Navigation("CustomerPreferences");
 
                     b.Navigation("Employees");
-                });
 
-            modelBuilder.Entity("PromoCodeFactory.Core.Domain.PromoCode", b =>
-                {
-                    b.Navigation("Preference");
+                    b.Navigation("PromoCodes");
                 });
 #pragma warning restore 612, 618
         }
