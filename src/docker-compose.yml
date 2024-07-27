@@ -11,8 +11,16 @@ services:
     shm_size: 128mb
     ports: 
       - "5432:5432"
-    #volumes: 
-    #  - postgresDB:/var/lib/postgresql/data
+    volumes: 
+     - postgresDB:/var/lib/postgresql/data
+
+  migrate: 
+    image: postgres:16
+    depends_on:
+      - db
+    volumes:
+      - ./migration.sql:/docker-entrypoint-initdb.d/migration.sql
+    entrypoint: /bin/sh -c 'sleep 10s; PGPASSWORD=pass123+ psql -h db -U postgres -d promoCodeDb -f /docker-entrypoint-initdb.d/migration.sql'
 
   app: 
     image: otus/hw5:latest
@@ -25,6 +33,7 @@ services:
       - "5001:5001"
     depends_on:
       - db
+      - migrate
 
   pgadmin: 
     image: dpage/pgadmin4:8
@@ -35,5 +44,5 @@ services:
     ports:
       - "8086:80"
 
-#volumes:
-#  postgresDB:
+volumes:
+  postgresDB:
