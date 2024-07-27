@@ -11,6 +11,6 @@ jobs:
       with:
         dotnet-version: '8.x.x'
     - name: install dependencies
-      run: dotnet restore './PromoCodeFactory.WebHost/PromoCodeFactory.WebHost.csproj'
+      run: dotnet restore './src/PromoCodeFactory.WebHost/PromoCodeFactory.WebHost.csproj'
     - name: build
       run: dotnet build './src/PromoCodeFactory.WebHost/PromoCodeFactory.WebHost.csproj'
