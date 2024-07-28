@@ -1,0 +1,48 @@
+version: '3'
+
+services:
+
+  db: 
+    image: postgres:16
+    restart: always
+    environment: 
+      POSTGRES_PASSWORD: pass123+
+      POSTGRES_DB: promoCodeDb
+    shm_size: 128mb
+    ports: 
+      - "5432:5432"
+    volumes: 
+     - postgresDB:/var/lib/postgresql/data
+
+  migrate: 
+    image: postgres:16
+    depends_on:
+      - db
+    volumes:
+      - ./migration.sql:/docker-entrypoint-initdb.d/migration.sql
+    entrypoint: /bin/sh -c 'sleep 10s; PGPASSWORD=pass123+ psql -h db -U postgres -d promoCodeDb -f /docker-entrypoint-initdb.d/migration.sql'
+
+  app: 
+    image: otus/hw5:latest
+    restart: always
+    environment:
+      ASPNETCORE_HTTP_PORT: https://+:5001
+      ASPNETCORE_URLS: http://+:5000
+    ports:
+      - "5000:5000"
+      - "5001:5001"
+    depends_on:
+      - db
+      - migrate
+
+  pgadmin: 
+    image: dpage/pgadmin4:8
+    restart: always
+    environment:
+      "PGADMIN_DEFAULT_EMAIL": test@gmail.com
+      "PGADMIN_DEFAULT_PASSWORD": pg-admin_1
+    ports:
+      - "8086:80"
+
+volumes:
+  postgresDB:
