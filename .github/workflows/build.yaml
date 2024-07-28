@@ -31,4 +31,3 @@ jobs:
         file: ./src/Dockerfile
         push: false
         tags: otus/hw5:latest
-        platforms: linux/amd64
