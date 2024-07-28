@@ -16,6 +16,7 @@ jobs:
       run: dotnet build './src/PromoCodeFactory.WebHost/PromoCodeFactory.WebHost.csproj'
       
   build-image:
+    needs: build
     runs-on: ubuntu-latest
     steps: 
     - name: load branch
